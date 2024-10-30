@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=3 uid="uid://e7084ldqsuaa"]
+
+[ext_resource type="Texture2D" uid="uid://cafysnqk2k6gu" path="res://assets/img/bag-black.png" id="1_l2bsr"]
+[ext_resource type="Texture2D" uid="uid://dwtwgi0py4eog" path="res://assets/img/bag-blue-strap.png" id="2_k45dg"]
+
+[sub_resource type="GDScript" id="GDScript_071ol"]
+script/source = "extends RigidBody2D
+
+var thrower:Character = null;
+var pickup_cooldown = 0.2;
+var pickup_timer = 0;
+
+func _ready() -> void:
+	set_multiplayer_authority(1);
+
+func is_picked_up():
+	return get_node(\"../../\") is Character;
+
+func get_weight() -> float:
+	return 0.85;
+
+@rpc(\"authority\", \"call_local\") func throw_weight(
+	new_parent:NodePath,
+	impulse:Vector2):
+	thrower = get_node(\"../../\") as Character;
+	reparent(get_node(new_parent), true);
+	apply_central_impulse(impulse);
+	$Bag/Strap.visible = false;
+	set_collision_mask_value(2, true);
+	process_mode = Node.PROCESS_MODE_INHERIT;
+	pickup_timer = pickup_cooldown;
+
+func _on_hitbox_body_entered(body):
+	if !is_multiplayer_authority():
+		return;
+	if pickup_timer > 0:
+		return;
+
+			
+	if body is Character:
+		if body == thrower:
+			return;
+		if !is_picked_up():
+			rpc(\"pickup\", body.get_path());
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	if state.linear_velocity.length_squared() < pow(750, 2):
+		thrower = null;
+	pickup_timer -= state.step;
+	
+	print(state.step);
+	state.linear_velocity = state.linear_velocity.move_toward(Vector2.ZERO, 
+		4550.0*state.step)
+
+@rpc(\"authority\", \"call_local\") func pickup(character:NodePath):
+	await get_tree().process_frame;
+	var char = get_node_or_null(character) as Character;
+	assert(char);
+	
+	reparent(char.get_node(\"Weights\"));
+	process_mode = Node.PROCESS_MODE_DISABLED
+	transform = Transform2D.IDENTITY;
+	top_level = false;
+	$Bag/Strap.visible = true;
+	
+	
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eyh6a"]
+size = Vector2(56, 30)
+
+[node name="Bag" type="RigidBody2D" groups=["Weight"]]
+position = Vector2(4, -25)
+rotation = -0.785398
+collision_layer = 2
+collision_mask = 2
+script = SubResource("GDScript_071ol")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-20.5061, 13.435)
+rotation = 0.658876
+shape = SubResource("RectangleShape2D_eyh6a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-20.5061, 13.435)
+rotation = 0.658876
+shape = SubResource("RectangleShape2D_eyh6a")
+
+[node name="Bag" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-18, 8.00001)
+rotation = 0.820308
+texture = ExtResource("1_l2bsr")
+
+[node name="Strap" type="Sprite2D" parent="Bag"]
+visible = false
+z_index = 2
+position = Vector2(-3.12287, -8.38139)
+rotation = 0.750492
+texture = ExtResource("2_k45dg")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

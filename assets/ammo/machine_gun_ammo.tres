@@ -1,0 +1,9 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://cyynjiix3i2a1"]
+
+[ext_resource type="Texture2D" uid="uid://dob4kqqg4d5ir" path="res://resource/img/ammo-MG-60.png" id="1_87lut"]
+
+[resource]
+atlas = ExtResource("1_87lut")
+region = Rect2(234, 0, 4, 80)
+margin = Rect2(0, 2.75, 0, 0)
+filter_clip = true

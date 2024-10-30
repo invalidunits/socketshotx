@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://c45s75gfjl4og"]
+
+[ext_resource type="Texture2D" uid="uid://dvscr8lekyc50" path="res://resource/img/ammo-9mm-30.png" id="1_m3v2j"]
+
+[resource]
+atlas = ExtResource("1_m3v2j")
+region = Rect2(329, 1, 8, 79)
+margin = Rect2(0, 2.75, 0, 0)

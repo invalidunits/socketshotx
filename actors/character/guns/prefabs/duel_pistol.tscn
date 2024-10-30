@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://m6l58ifa3opd"]
+
+[ext_resource type="Script" path="res://actors/character/guns/prefabs/duel_pistol.gd" id="1_2ompx"]
+
+[node name="2" type="Node2D"]
+position = Vector2(36, 0)
+script = ExtResource("1_2ompx")

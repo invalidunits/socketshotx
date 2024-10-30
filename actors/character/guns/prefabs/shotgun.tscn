@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4o6t3q20axm2"]
+
+[ext_resource type="Script" path="res://actors/character/guns/prefabs/shotgun.gd" id="1_tcdh7"]
+
+[node name="4" type="Node2D"]
+position = Vector2(42, 5)
+script = ExtResource("1_tcdh7")

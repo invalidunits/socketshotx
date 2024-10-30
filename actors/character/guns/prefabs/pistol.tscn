@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp55owe84ygu4"]
+
+[ext_resource type="Script" path="res://actors/character/guns/prefabs/pistol.gd" id="1_4eul8"]
+
+[node name="1" type="Node2D"]
+position = Vector2(32, 0)
+script = ExtResource("1_4eul8")

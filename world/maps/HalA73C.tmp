@@ -1,0 +1,349 @@
+[gd_scene load_steps=15 format=3 uid="uid://cpv7rcc1mvrn1"]
+
+[ext_resource type="Texture2D" uid="uid://blxsy8bmobgjw" path="res://Maps/hallwaycollision.png" id="2_oakq8"]
+[ext_resource type="PackedScene" uid="uid://ctk00nsbyxa4m" path="res://Character/AI/Grunt.tscn" id="3_66kkh"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hmlx4"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_epyo8"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_hmxn7"]
+vertices = PackedVector2Array(-621, -1008, -1464, -1032, 1418, -1005, -371, -1006, -1423, -1007, 893, -537, 1028, -612, 1330, -612, 1247, -317, 532, -308, 1461, 607, 1419, 422, 1238, 284, 1251, -112, 1250, 366, 1317, -750, 1399, 581, 367, 564, 641, 566, -1476, 588, -887, 569, -306, 259, -306, 126, -232, 133, -225, 423, -1032, 488, -1184, 486, 1213, 128, 453, -184, 526, -110, 357, 134, 446, -320, -1420, -838, -884, 124, -1038, 189, 887, -993, 1033, -900, -740, 425, -587, 271, -740, 126, -587, 127, 299, -542, 593, -554, 757, -545, -203, -318, 227, -524, 658, 117, 746, -834, 582, -681, 223, -839, 296, -668, -524, -309, -371, -532, -454, -229, -663, -551, -666, -661, -634, -758, -1254, -306, -1223, -557, -196, -239, -524, -102, -458, -95, -1333, 186, -1250, -823, -1238, -766, -1221, -669, 1184, -746, 1184, -902, -1339, 344, -1181, 343, 208, -106, 206, -177, 653, 349, 647, 275, 1250, 414, -1256, -100)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(1, 0, 4), PackedInt32Array(5, 6, 7, 8, 9), PackedInt32Array(2, 10, 11, 7), PackedInt32Array(12, 13, 7, 11, 14), PackedInt32Array(7, 13, 8), PackedInt32Array(2, 7, 15), PackedInt32Array(16, 11, 10), PackedInt32Array(17, 18, 16, 10, 19, 20), PackedInt32Array(21, 22, 23, 24), PackedInt32Array(25, 20, 19, 26), PackedInt32Array(13, 12, 27), PackedInt32Array(28, 9, 29, 30), PackedInt32Array(9, 28, 31), PackedInt32Array(19, 1, 4, 32), PackedInt32Array(33, 20, 25, 34), PackedInt32Array(6, 5, 35, 36), PackedInt32Array(21, 24, 37, 38), PackedInt32Array(38, 37, 39, 40), PackedInt32Array(41, 42, 43, 5, 9, 31), PackedInt32Array(41, 31, 44, 45), PackedInt32Array(29, 13, 27, 46), PackedInt32Array(47, 43, 42, 48), PackedInt32Array(49, 47, 48, 50), PackedInt32Array(45, 49, 50, 41), PackedInt32Array(51, 52, 45, 44, 53), PackedInt32Array(3, 52, 51, 54, 55, 56), PackedInt32Array(54, 51, 57, 58), PackedInt32Array(44, 59, 53), PackedInt32Array(60, 51, 53, 61), PackedInt32Array(58, 57, 62, 19, 32, 63, 64, 65), PackedInt32Array(15, 66, 67, 2), PackedInt32Array(68, 69, 26, 19), PackedInt32Array(70, 71, 28, 30), PackedInt32Array(72, 18, 17, 30, 73), PackedInt32Array(11, 74, 14), PackedInt32Array(12, 14, 72, 73), PackedInt32Array(46, 73, 30, 29), PackedInt32Array(61, 70, 30, 23, 22), PackedInt32Array(75, 60, 61, 22, 40, 39, 33), PackedInt32Array(75, 33, 34, 62), PackedInt32Array(67, 36, 35, 2), PackedInt32Array(62, 68, 19), PackedInt32Array(57, 75, 62), PackedInt32Array(65, 64, 56, 55), PackedInt32Array(3, 56, 0), PackedInt32Array(3, 2, 35)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-1333, 186, -1339, 344, -1181, 343, -1184, 486, -1032, 488, -1038, 189), PackedVector2Array(-740, 126, -884, 124, -887, 569, 367, 564, 357, 134, -232, 133, -225, 423, -740, 425), PackedVector2Array(-587, 127, -587, 271, -306, 259, -306, 126), PackedVector2Array(658, 117, 647, 275, 1238, 284, 1213, 128), PackedVector2Array(653, 349, 641, 566, 1399, 581, 1419, 422, 1250, 414, 1250, 366), PackedVector2Array(532, -308, 526, -110, 1251, -112, 1247, -317), PackedVector2Array(-203, -318, -196, -239, -454, -229, -458, -95, 208, -106, 206, -177, 453, -184, 446, -320), PackedVector2Array(-524, -309, -1254, -306, -1256, -100, -524, -102), PackedVector2Array(-1221, -669, -1223, -557, -663, -551, -666, -661), PackedVector2Array(-1250, -823, -1238, -766, -634, -758, -621, -1008, -1423, -1007, -1420, -838), PackedVector2Array(-371, -1006, -371, -532, 227, -524, 223, -839, 746, -834, 757, -545, 893, -537, 887, -993), PackedVector2Array(1184, -902, 1184, -746, 1317, -750, 1330, -612, 1028, -612, 1033, -900), PackedVector2Array(296, -668, 299, -542, 593, -554, 582, -681), PackedVector2Array(-1464, -1032, -1476, 588, 1461, 607, 1418, -1005)])
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_54qp0"]
+
+[sub_resource type="GDScript" id="GDScript_lqrhu"]
+script/source = "extends SubViewport
+
+@onready var hallway = $\"../../..\"
+
+func _ready():
+	while true:
+		await RenderingServer.frame_pre_draw;
+		var view = hallway.get_canvas_transform();
+		var zoom = sqrt(min(view.x.length_squared(), view.y.length_squared()));
+		var scale = $Sprite3D.pixel_size/zoom;
+		
+		$Camera3D.position.y = (max(size.x, size.y)*scale)/2.515;
+		$Camera3D.position.x = (-view.origin.x + size.x/2.0)*scale;
+		$Camera3D.position.z = (-view.origin.y + size.y/2.0)*scale;
+	
+	
+"
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6jykg"]
+
+[sub_resource type="Sky" id="Sky_c3umv"]
+sky_material = SubResource("ProceduralSkyMaterial_6jykg")
+
+[sub_resource type="Environment" id="Environment_nj4wh"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+background_energy_multiplier = 0.2
+sky = SubResource("Sky_c3umv")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+ssao_enabled = true
+sdfgi_use_occlusion = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xgbk3"]
+metallic = 1.0
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3q82b"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_31r41"]
+albedo_color = Color(1, 0, 0.0156863, 1)
+
+[sub_resource type="VoxelGIData" id="VoxelGIData_nv2ka"]
+
+[node name="Hallway" type="Node2D"]
+
+[node name="Collision" type="Node" parent="."]
+
+[node name="World" type="StaticBody2D" parent="Collision"]
+position = Vector2(0, 212)
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(-780, 159, -852, 158, -855, 680, 315, 680, 319, 159, -193, 159, -191, 451, -780, 450)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(681, 376, 685, 675, 1454, 675, 1454, 452, 1198, 451, 1201, 380)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(686, 156, 687, 229, 1199, 230, 1201, 156)
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(-558, 157, -559, 232, -339, 232, -338, 157)
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(-1072, 230, -1071, 452, -1145, 453, -1145, 301, -1292, 302, -1292, 230)
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(-1216, -284, -1215, -137, -559, -135, -558, -283)
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="Collision/World"]
+polygon = PackedVector2Array(-414, -208, -413, -138, 172, -136, 172, -211)
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-780, 159, -852, 158, -855, 680, 315, 680, 319, 159, -193, 159, -191, 451, -780, 450)
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(681, 376, 685, 675, 1454, 675, 1454, 452, 1198, 451, 1201, 380)
+
+[node name="CollisionPolygon2D10" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(686, 156, 687, 229, 1199, 230, 1201, 156)
+
+[node name="CollisionPolygon2D11" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-558, 157, -559, 232, -339, 232, -338, 157)
+
+[node name="CollisionPolygon2D12" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-1072, 230, -1071, 452, -1145, 453, -1145, 301, -1292, 302, -1292, 230)
+
+[node name="CollisionPolygon2D13" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-1216, -284, -1215, -137, -559, -135, -558, -283)
+
+[node name="CollisionPolygon2D14" type="CollisionPolygon2D" parent="Collision/World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-414, -208, -413, -138, 172, -136, 172, -211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/World"]
+position = Vector2(1423, 449)
+shape = SubResource("WorldBoundaryShape2D_hmlx4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collision/World"]
+position = Vector2(530, 599)
+shape = SubResource("WorldBoundaryShape2D_epyo8")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collision/World"]
+position = Vector2(-1436, -867)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_hmlx4")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Collision/World"]
+position = Vector2(-479, -1014)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_epyo8")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="Collision/World"]
+position = Vector2(0, -4)
+navigation_polygon = SubResource("NavigationPolygon_hmxn7")
+constrain_avoidance = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_54qp0")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1100, 900)
+render_target_update_mode = 4
+script = SubResource("GDScript_lqrhu")
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 9.155, 0)
+environment = SubResource("Environment_nj4wh")
+current = true
+fov = 90.0
+
+[node name="Sprite3D" type="Sprite3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(4.751, 0, 0, 0, 4.751, 0, 0, 0, 4.751, 0, 0, 0)
+visible = false
+axis = 1
+texture = ExtResource("2_oakq8")
+
+[node name="CSGCombiner3D2" type="CSGCombiner3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.588482, 6.22553, 2.72127e-07)
+size = Vector3(5.00537, 5.11585, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.717, 7.74319, 3.38466e-07)
+size = Vector3(9.65076, 2.08052, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.27516, 6.13261, 2.68065e-07)
+size = Vector3(0.864954, 5.22134, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.53099, 3.98345, 1.74122e-07)
+size = Vector3(2.19242, 0.934212, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, -7.80413e-10, 1, 6.96687e-12, 0.0178538, 6.96687e-12, 0.999841, -9.35195, 3.98345, 1.74122e-07)
+size = Vector3(5.38345, 0.827513, 1)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, -7.80413e-10, 1, 6.96687e-12, 0.0178538, 6.96687e-12, 0.999841, -9.32098, 7.26089, 3.17384e-07)
+size = Vector3(5.29389, 3.11815, 1)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(0.999841, 7.80385e-10, -0.0178538, 0.000318133, 0.999841, 0.017816, 0.0178509, -0.0178189, 0.999682, -12.6653, 7.64255, 3.34066e-07)
+size = Vector3(3.86747, 2.30805, 1)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.588482, 6.22553, 2.72127e-07)
+size = Vector3(5.29598, 5.40727, 1)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.717, 7.74319, 3.38466e-07)
+size = Vector3(9.96212, 2.47815, 1)
+
+[node name="CSGCombiner3D3" type="CSGCombiner3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 0.133732, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.588482, 6.22553, 2.72127e-07)
+size = Vector3(5.00537, 5.11585, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.717, 7.74319, 3.38466e-07)
+size = Vector3(9.65076, 2.08052, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.27516, 6.13261, 2.68065e-07)
+size = Vector3(0.864954, 5.22134, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.53099, 3.98345, 1.74122e-07)
+size = Vector3(2.19242, 0.934212, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, -7.80413e-10, 1, 6.96687e-12, 0.0178538, 6.96687e-12, 0.999841, -9.35195, 3.98345, 1.74122e-07)
+size = Vector3(5.38345, 0.827513, 1)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(0.999841, 7.8041e-10, -0.0178538, -7.8041e-10, 1, 6.96332e-12, 0.0178538, 6.96687e-12, 0.999841, -9.32098, 7.26089, 3.17384e-07)
+size = Vector3(5.29389, 3.11815, 1)
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(0.999841, 7.42077e-10, -0.0178538, 0.000318133, 0.999841, 0.017816, 0.0178509, -0.0178189, 0.999682, -12.6653, 7.64255, 3.34066e-07)
+size = Vector3(3.86747, 2.30805, 1)
+
+[node name="CSGBox3D11" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.588482, 6.22553, 2.72127e-07)
+size = Vector3(5.29598, 5.40727, 1)
+
+[node name="CSGBox3D12" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.717, 7.74319, 3.38466e-07)
+size = Vector3(9.96212, 2.47815, 1)
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D"]
+size = Vector3(48.6526, 1, 32.6856)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D"]
+operation = 2
+size = Vector3(28.905, 1, 16.365)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D"]
+operation = 2
+size = Vector3(54.6131, 1, 2.10016)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.005, 0)
+material_override = SubResource("StandardMaterial3D_xgbk3")
+size = Vector3(49.3401, 0.01, 22.517)
+
+[node name="CSGCombiner3D4" type="CSGCombiner3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+material_override = SubResource("StandardMaterial3D_3q82b")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D4"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, 0.0178538, -4.37044e-08, 0.999841, 0, -1, -4.37114e-08, 11.8963, 0, -4.7255)
+size = Vector3(2.46463, 0.854299, 1)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D4"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, 0.0178538, -4.37044e-08, 0.999841, 0, -1, -4.37114e-08, 11.1319, 0, -5.56223)
+size = Vector3(0.948499, 2.30373, 1)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D4"]
+transform = Transform3D(0.999841, 7.80413e-10, -0.0178538, 0.0178509, 0.0178537, 0.999681, 0.000318757, -0.999841, 0.0178509, 8.95158, 0, -0.0353503)
+size = Vector3(6.95326, 1.72111, 1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.22129, 0, -0.319022)
+size = Vector3(5.92695, 1, 0.710569)
+
+[node name="CSGCombiner3D5" type="CSGCombiner3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.827032, -0.562155, -7.99908e-07, 0.279607, 0.411351, 0.867531, -0.487687, -0.717476, 0.497383, 0.114586, 5.77543, -0.291298)
+material_override = SubResource("StandardMaterial3D_31r41")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D5"]
+transform = Transform3D(-0.821908, -0.487687, 0.294328, 0.56941, -0.717476, 0.401249, 0.0154895, 0.497383, 0.867393, -13.8843, 0.701665, -2.51509)
+size = Vector3(2.46463, 0.854299, 1)
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D5"]
+transform = Transform3D(-0.821908, -0.487687, 0.294328, 0.56941, -0.717476, 0.401249, 0.0154895, 0.497383, 0.867393, -13.6601, -0.328428, -2.09891)
+size = Vector3(0.948499, 2.30373, 1)
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D5"]
+transform = Transform3D(-0.821753, -0.482617, 0.302989, 0.569637, -0.710018, 0.413991, 0.0153285, 0.512792, 0.858376, -9.16156, 2.41132, -4.84789)
+size = Vector3(6.95326, 1.72111, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="CanvasLayer/SubViewportContainer/SubViewport/CSGCombiner3D5"]
+transform = Transform3D(0.827031, 0.279607, -0.487687, -0.562155, 0.411351, -0.717476, -7.97497e-07, 0.867531, 0.497383, -2.99515, -2.1692, -4.66342)
+size = Vector3(5.92695, 1, 0.710569)
+
+[node name="VoxelGI" type="VoxelGI" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+size = Vector3(48.2313, 3.79777, 22.6342)
+data = SubResource("VoxelGIData_nv2ka")
+
+[node name="Character" parent="." instance=ExtResource("3_66kkh")]
+position = Vector2(-656, 249)
+family_layer = 2
+enemy_mask = 12
+
+[node name="Hallwaycollision" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.690196)
+position = Vector2(-5.00008, -1.00015)
+scale = Vector2(4.751, 4.751)
+texture = ExtResource("2_oakq8")
+
+[node name="SpawnPositions" type="Node" parent="."]
+
+[node name="Node2D" type="Node2D" parent="SpawnPositions"]
+position = Vector2(1029, -309)
+
+[node name="Node2D2" type="Node2D" parent="SpawnPositions"]
+position = Vector2(1335, 229)
+
+[node name="Node2D3" type="Node2D" parent="SpawnPositions"]
+position = Vector2(-1346, 253)
+rotation = -3.14159
+
+[node name="Node2D4" type="Node2D" parent="SpawnPositions"]
+position = Vector2(-1044, -293)
+rotation = -3.14159

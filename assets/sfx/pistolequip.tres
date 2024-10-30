@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=3 format=3 uid="uid://brxy3q6yxspas"]
+
+[ext_resource type="AudioStream" uid="uid://ba535kgv4ubv4" path="res://resource/sfx/Pistolequip.mp3" id="1_smh5y"]
+[ext_resource type="AudioStream" uid="uid://1jewgrlsnae2" path="res://resource/sfx/Pistolequip2.mp3" id="2_oohig"]
+
+[resource]
+streams_count = 2
+stream_0/stream = ExtResource("1_smh5y")
+stream_1/stream = ExtResource("2_oohig")

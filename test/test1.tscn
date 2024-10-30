@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6t1g7lh5v10k"]
+
+[ext_resource type="PackedScene" uid="uid://bgsdqpkkkb1nm" path="res://actors/character/character.tscn" id="1_p4xau"]
+[ext_resource type="Script" path="res://actors/character/player_controller.gd" id="2_37mj3"]
+
+[node name="Test" type="Node2D"]
+
+[node name="Character" parent="." node_paths=PackedStringArray("controller") instance=ExtResource("1_p4xau")]
+controller = NodePath("PlayerController")
+
+[node name="PlayerController" type="Node2D" parent="Character"]
+script = ExtResource("2_37mj3")

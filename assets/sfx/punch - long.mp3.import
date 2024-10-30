@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bx783y0ucmop1"
+path="res://.godot/imported/punch - long.mp3-620ca5ee1f907b5c6f53b3e773e47c05.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/punch - long.mp3"
+dest_files=["res://.godot/imported/punch - long.mp3-620ca5ee1f907b5c6f53b3e773e47c05.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

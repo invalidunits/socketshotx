@@ -1,0 +1,213 @@
+[gd_scene load_steps=22 format=3 uid="uid://nxdy2biystsy"]
+
+[ext_resource type="Texture2D" uid="uid://b0w6nk6fxmmvv" path="res://assets/img/dynamic/torso/body1/default.png" id="1_5kco4"]
+[ext_resource type="Texture2D" uid="uid://gvnsvmq0xxb7" path="res://assets/img/blood-pool.png" id="1_oawpq"]
+[ext_resource type="Texture2D" uid="uid://d1kepiqopqe5u" path="res://assets/img/dynamic/legs/body1/default.png" id="2_x3jey"]
+[ext_resource type="Texture2D" uid="uid://cucqmqc37ynb3" path="res://assets/img/dynamic/torso/bodyWall/default.png" id="2_ynf0f"]
+[ext_resource type="Texture2D" uid="uid://pdahe3jmuf0g" path="res://assets/img/dynamic/shoes/body1/default.png" id="3_m4au5"]
+[ext_resource type="Texture2D" uid="uid://c31nmacbb18bd" path="res://assets/img/dynamic/head/default.png" id="4_02ksh"]
+[ext_resource type="Texture2D" uid="uid://ytfvuoo0x3ww" path="res://assets/img/dynamic/hair/crewHair.png" id="5_uw33j"]
+[ext_resource type="Texture2D" uid="uid://2g48551hh8j4" path="res://assets/img/dynamic/arms/body1/default.png" id="6_busej"]
+[ext_resource type="Texture2D" uid="uid://cahmtl4jltsvj" path="res://assets/img/dynamic/hands/body1/default.png" id="7_okppv"]
+[ext_resource type="Texture2D" uid="uid://1temhtxwgde2" path="res://assets/img/dynamic/arms/bodyWall/default.png" id="7_rg4tl"]
+[ext_resource type="Texture2D" uid="uid://p3sliksyos5p" path="res://assets/img/dynamic/hands/bodyWall/default.png" id="8_xqn5f"]
+
+[sub_resource type="GDScript" id="GDScript_dfxu6"]
+script/source = "extends CharacterBody2D
+
+
+var bled_out = false;
+func _physics_process(delta: float) -> void:
+	if is_on_wall():
+		look_at(
+			global_position - get_wall_normal()
+		);
+		$OnWall.visible = true;
+		$OnGround.visible = false;
+	else:
+		$OnWall.visible = false;
+		$OnGround.visible = true
+		if !velocity.is_zero_approx():
+			look_at(
+				global_position + velocity
+			);
+	velocity = velocity.lerp(Vector2.ZERO, 4*delta);
+	var travel = get_last_motion();
+	var distance_for_blood = 50;
+	
+	for i in range(floor(get_last_motion()/distance_for_blood)):
+		$Blood2.emit_particle(
+			Transform2D(global_rotation, 
+			global_position + distance_for_blood*travel.normalized()),
+			Vector2.ZERO,
+			Color.WHITE,
+			Color.WHITE,
+			GPUParticles2D.EMIT_FLAG_ROTATION_SCALE | GPUParticles2D.EMIT_FLAG_POSITION
+		);
+	if velocity.is_zero_approx() && !bled_out:
+		$AnimationPlayer.play(\"Bleed\");
+		bled_out = true;
+	
+	
+	move_and_slide();
+
+
+func load_key(part_key, anim_key, key):
+	var texture = load_or_placeholder(\"res://resource/img/dynamic/\" + part_key + \"/\" + anim_key + \"/default.png\");
+	if texture:
+		return texture;
+	texture = load_or_placeholder(\"res://resource/img/dynamic/\" + part_key + \"/\" + key + \"/default.png\");
+	return texture;
+
+func load_or_placeholder(path:String) -> Texture2D:
+	var texture = null;
+	if ResourceLoader.exists(path):
+		texture = load(path);
+	return texture;
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7qpx0"]
+radius = 25.02
+
+[sub_resource type="Animation" id="Animation_p1618"]
+resource_name = "Bleed"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Blood:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5),
+"transitions": PackedFloat32Array(1.23114, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yhu6e"]
+_data = {
+"Bleed": SubResource("Animation_p1618")
+}
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_x1og1"]
+properties/0/path = NodePath(".:global_transform")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:velocity")
+properties/1/spawn = true
+properties/1/replication_mode = 0
+
+[sub_resource type="Curve" id="Curve_5juar"]
+_data = [Vector2(0.87519, 1), 0.0, -0.0686219, 0, 0, Vector2(0.978691, 0), -0.0592758, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8wgf3"]
+curve = SubResource("Curve_5juar")
+
+[sub_resource type="Curve" id="Curve_cxf75"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.194825, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_1aj0l"]
+curve = SubResource("Curve_cxf75")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7fx07"]
+particle_flag_disable_z = true
+angle_min = 80.0
+angle_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.7
+scale_max = 0.8
+scale_curve = SubResource("CurveTexture_1aj0l")
+alpha_curve = SubResource("CurveTexture_8wgf3")
+
+[node name="DeadBody" type="CharacterBody2D"]
+z_index = -1
+scale = Vector2(0.753307, 0.753307)
+collision_layer = 0
+collision_mask = 2
+motion_mode = 1
+script = SubResource("GDScript_dfxu6")
+
+[node name="Blood" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("1_oawpq")
+
+[node name="OnGround" type="Sprite2D" parent="."]
+rotation = 1.5708
+texture = ExtResource("1_5kco4")
+
+[node name="Legs" type="Sprite2D" parent="OnGround"]
+position = Vector2(1.43051e-05, 4)
+texture = ExtResource("2_x3jey")
+
+[node name="Shoes" type="Sprite2D" parent="OnGround/Legs"]
+texture = ExtResource("3_m4au5")
+
+[node name="Head" type="Sprite2D" parent="OnGround"]
+position = Vector2(-0.000144958, -40)
+rotation = 3.15556
+texture = ExtResource("4_02ksh")
+
+[node name="Hair" type="Sprite2D" parent="OnGround/Head"]
+texture = ExtResource("5_uw33j")
+
+[node name="Arms" type="Sprite2D" parent="OnGround"]
+show_behind_parent = true
+texture = ExtResource("6_busej")
+
+[node name="Hands" type="Sprite2D" parent="OnGround/Arms"]
+texture = ExtResource("7_okppv")
+
+[node name="OnWall" type="Sprite2D" parent="."]
+position = Vector2(32, 2.38419e-07)
+rotation = 1.57079
+texture = ExtResource("2_ynf0f")
+
+[node name="Legs" type="Sprite2D" parent="OnWall"]
+show_behind_parent = true
+position = Vector2(1.43051e-05, 4)
+texture = ExtResource("2_x3jey")
+
+[node name="Shoes" type="Sprite2D" parent="OnWall/Legs"]
+texture = ExtResource("3_m4au5")
+
+[node name="Head" type="Sprite2D" parent="OnWall"]
+position = Vector2(2.67029e-05, 7)
+rotation = 3.66519
+texture = ExtResource("4_02ksh")
+
+[node name="Hair" type="Sprite2D" parent="OnWall/Head"]
+texture = ExtResource("5_uw33j")
+
+[node name="Arms" type="Sprite2D" parent="OnWall"]
+show_behind_parent = true
+texture = ExtResource("7_rg4tl")
+
+[node name="Hands" type="Sprite2D" parent="OnWall/Arms"]
+show_behind_parent = true
+texture = ExtResource("8_xqn5f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7qpx0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_yhu6e")
+}
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_x1og1")
+visibility_update_mode = 1
+
+[node name="Blood2" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 5
+process_material = SubResource("ParticleProcessMaterial_7fx07")
+texture = ExtResource("1_oawpq")
+lifetime = 5.0
+one_shot = true
+explosiveness = 0.56
+draw_order = 0

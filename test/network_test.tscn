@@ -1,0 +1,98 @@
+[gd_scene load_steps=3 format=3 uid="uid://doxklqrqd0qma"]
+
+[ext_resource type="PackedScene" uid="uid://cpv7rcc1mvrn1" path="res://world/maps/hallway.tscn" id="1_fps6r"]
+
+[sub_resource type="GDScript" id="GDScript_bbdsk"]
+script/source = "extends Node
+
+
+const max_player = 4;
+const port = 32552;
+
+func _ready():
+	var peer = ENetMultiplayerPeer.new()
+	print(\"Attempting to host on \", port);
+	if (peer.create_server(port, max_player) != OK):
+		print(\"Port taken, becoming client\");
+		if (peer.create_client(\"127.0.0.1\", port)) != OK:
+			$AcceptDialog.show();
+			await $AcceptDialog.confirmed;
+			get_tree().quit(1);
+			return;
+		multiplayer.multiplayer_peer = peer;
+		print(\"Client Succeded\");
+		await client_ready();
+		return;
+		
+	
+	print(\"Host succeeded\");
+	
+	get_window().size = Vector2(1, 1);
+	multiplayer.multiplayer_peer = peer;
+	await host_ready();
+var player_dictionary = {};
+
+func host_ready():
+	multiplayer.connect(\"peer_connected\", func (peer):
+			var player = preload(\"res://actors/character/character.tscn\").instantiate();
+			player_dictionary[peer] = player;
+			player.name = String.num(peer);
+			add_to_team(player);
+	);
+	
+	multiplayer.connect(\"peer_disconnected\", func (peer):
+		if player_dictionary.has(peer):
+			rpc(\"remove_player\", 
+				player_dictionary[peer].get_path());
+			player_dictionary.erase(peer);
+	);
+
+func player_spawn_function(player:Node):
+	player.spawn(
+			[\"RedSpawnPosition\"] as Array[String], null
+	)
+
+func add_to_team(player:Node):
+	var count = $RedTeam.get_child_count() - $BlueTeam.get_child_count();
+	if count >= 0:
+		player.family_layer = 4;
+		$RedTeam.add_child(player);
+		player.spawn(
+			[\"RedSpawnPosition\"] as Array[String], null
+		)
+	else:
+		player.family_layer = 8;
+		$BlueTeam.add_child(player);
+		player.spawn(
+			[\"BlueSpawnPosition\"] as Array[String], null
+		)
+
+
+@rpc(\"reliable\", \"call_local\") func remove_player(peer:NodePath):
+	var node = get_node_or_null(peer);
+	if !is_instance_valid(node):
+		return;
+	
+	
+	if node.get_parent() != $RedTeam && node.get_parent() != $BlueTeam:
+		return;	
+	node.queue_free();
+
+
+
+
+func client_ready():
+	pass;
+"
+
+[node name="NetworkTest" type="Node2D"]
+script = SubResource("GDScript_bbdsk")
+
+[node name="Hallway" parent="." instance=ExtResource("1_fps6r")]
+
+[node name="RedTeam" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath(".")
+
+[node name="BlueTeam" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://actors/character/character.tscn")
+spawn_path = NodePath(".")

@@ -1,0 +1,181 @@
+[gd_scene load_steps=14 format=3 uid="uid://bgsdqpkkkb1nm"]
+
+[ext_resource type="PackedScene" uid="uid://cl7lidi5v8nd3" path="res://actors/character/character_display.tscn" id="1_vxypb"]
+[ext_resource type="Script" path="res://actors/character/character.gd" id="1_xhbn4"]
+[ext_resource type="Script" path="res://actors/character/power/boost_power.gd" id="3_d22yy"]
+[ext_resource type="Script" path="res://actors/character/power/throw_weight.gd" id="4_h686s"]
+[ext_resource type="PackedScene" uid="uid://bp55owe84ygu4" path="res://actors/character/guns/prefabs/pistol.tscn" id="5_q1f02"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jsap"]
+friction = 0.0
+bounce = 0.22
+
+[sub_resource type="Shader" id="Shader_x3akj"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+uniform float cloak: hint_range(0.0, 1.0, 0.1);
+uniform int outline_detail: hint_range(0, 8, 1);
+uniform float outline_size: hint_range(0.0, 50.0);
+uniform vec4 outline_color: source_color = vec4(1);
+
+
+
+varying vec2 direction;
+varying vec2 size;
+
+void vertex() {
+	size = TEXTURE_PIXEL_SIZE;
+	
+	direction = mat3(MODEL_MATRIX)[0].xy;
+}
+
+
+void fragment() {
+	vec2 uv = SCREEN_UV;
+	
+	uv += direction * (sin(((TIME*4.0) + UV.y*24.0))*0.005)*cloak;
+	
+	
+	
+	
+	
+
+	
+	
+	vec4 c = textureLod(screen_texture, uv, 0.0);
+	COLOR *= c;
+
+	float outline_alpha = float(-outline_detail) * COLOR.a;
+	int outline_det = max(outline_detail, 1)*4;
+	
+	
+	for (int i = 0; i < outline_det; i++) {
+		vec2 offset = vec2(
+			cos(float(i)*TAU/float(outline_det)),
+			sin(float(i)*TAU/float(outline_det))
+		)*outline_size*size;
+		outline_alpha += texture(screen_texture, uv + offset).a;
+	}
+	outline_alpha = min(outline_alpha, 1.0);
+	
+	
+	COLOR = mix(COLOR, outline_color, min(outline_alpha, 1.0)-COLOR.a);
+	COLOR.a *= max(0.05, 1.0-cloak);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fhb8s"]
+resource_local_to_scene = true
+shader = SubResource("Shader_x3akj")
+shader_parameter/cloak = 0.0
+shader_parameter/outline_detail = 4
+shader_parameter/outline_size = 0.003
+shader_parameter/outline_color = Color(1, 1, 1, 0)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ddbha"]
+properties/0/path = NodePath(".:health")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:shooting")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:input_shoot_direction")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:weapon")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
+[sub_resource type="GDScript" id="GDScript_ps0ho"]
+script/source = "extends MultiplayerSynchronizer
+
+
+func _enter_tree() -> void:
+	set_multiplayer_authority(1); # Host Synchronizer always synchronizes things from the host level.
+	
+"
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_e7338"]
+properties/0/path = NodePath(".:energy")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:cloaking")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6iknf"]
+radius = 15.0333
+
+[sub_resource type="GDScript" id="GDScript_a7mqq"]
+script/source = "extends Node
+
+func _physics_process(delta):
+	set_multiplayer_authority(1, true);
+	if !is_multiplayer_authority():
+		return;
+	var data:Array = []
+	for child in get_children():
+		child = child as Weapon;
+		if child:
+			data.append(
+				{
+					\"name\": child.name,
+					\"ammo\": child.ammo,
+					\"clip\": child.clip,
+					\"prep\": child.prep,
+					\"reloading\": child.reloading,
+					\"reload_timer\": child.reload_timer,
+				}
+			);
+	if get_parent().name.is_valid_int():
+		rpc_id(get_parent().name.to_int(), \"_process_weapons\", data);
+
+@rpc(\"authority\", \"call_remote\", \"unreliable_ordered\", 3) func _process_weapons(data:Array):
+	for weapon in data:
+		var wep = get_node_or_null(NodePath(weapon.get(\"name\", \"\")));
+		if wep:
+			wep.ammo = weapon.get(\"ammo\", wep.ammo);
+			wep.clip = weapon.get(\"clip\", wep.clip);
+			wep.prep = weapon.get(\"prep\", wep.prep)
+			wep.reloading = weapon.get(\"reloading\", wep.reloading);
+			wep.reload_timer = weapon.get(\"reload_timer\", wep.reload_timer);
+"
+
+[node name="Character" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_6jsap")
+script = ExtResource("1_xhbn4")
+
+[node name="Display" parent="." instance=ExtResource("1_vxypb")]
+material = SubResource("ShaderMaterial_fhb8s")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Display"]
+remote_path = NodePath("../../Weights")
+
+[node name="HostSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ddbha")
+script = SubResource("GDScript_ps0ho")
+
+[node name="ClientSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_e7338")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6iknf")
+
+[node name="Weights" type="Node2D" parent="."]
+
+[node name="Powers" type="Node" parent="."]
+
+[node name="Boost" type="Node" parent="Powers"]
+script = ExtResource("3_d22yy")
+
+[node name="ThrowWeight" type="Node" parent="Powers"]
+script = ExtResource("4_h686s")
+
+[node name="Weapons" type="Node2D" parent="."]
+script = SubResource("GDScript_a7mqq")
+
+[node name="1" parent="Weapons" instance=ExtResource("5_q1f02")]
+
+[node name="Corpses" type="Node" parent="."]

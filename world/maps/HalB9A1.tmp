@@ -1,0 +1,148 @@
+[gd_scene load_steps=6 format=3 uid="uid://cpv7rcc1mvrn1"]
+
+[ext_resource type="Texture2D" uid="uid://dguifk2b1dchv" path="res://Maps/hallway.png" id="1_h2bjd"]
+[ext_resource type="PackedScene" uid="uid://cr7sf1qd6gd3c" path="res://Character/Player.tscn" id="2_5h3g0"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_hmlx4"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_epyo8"]
+
+[sub_resource type="GDScript" id="GDScript_lqrhu"]
+script/source = "extends SubViewport
+
+@onready var hallway = $\"../../..\"
+
+
+func _process(delta):
+	var view = hallway.get_viewport().get_final_transform();
+	
+	var scale = $Sprite3D.pixel_size;
+	
+	
+	print(view.origin.x)
+	
+	$Camera3D.position.x = -view.origin.x*4;
+	$Camera3D.position.z = -view.origin.y*4;
+	
+	
+	print($Camera3D.position);
+"
+
+[node name="Hallway" type="Node2D"]
+
+[node name="Hallway" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.65098)
+position = Vector2(-9, -206)
+scale = Vector2(3.497, 3.497)
+texture = ExtResource("1_h2bjd")
+
+[node name="Character" parent="." instance=ExtResource("2_5h3g0")]
+position = Vector2(9, -1)
+rotation = 1.5708
+
+[node name="World" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(-780, 159, -852, 158, -855, 680, 315, 680, 319, 159, -193, 159, -191, 451, -780, 450)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(681, 376, 685, 675, 1454, 675, 1454, 452, 1198, 451, 1201, 380)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(686, 156, 687, 229, 1199, 230, 1201, 156)
+
+[node name="CollisionPolygon2D4" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(-558, 157, -559, 232, -339, 232, -338, 157)
+
+[node name="CollisionPolygon2D5" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(-1072, 230, -1071, 452, -1145, 453, -1145, 301, -1292, 302, -1292, 230)
+
+[node name="CollisionPolygon2D6" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(-1216, -284, -1215, -137, -559, -135, -558, -283)
+
+[node name="CollisionPolygon2D7" type="CollisionPolygon2D" parent="World"]
+polygon = PackedVector2Array(-414, -208, -413, -138, 172, -136, 172, -211)
+
+[node name="CollisionPolygon2D8" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-780, 159, -852, 158, -855, 680, 315, 680, 319, 159, -193, 159, -191, 451, -780, 450)
+
+[node name="CollisionPolygon2D9" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(681, 376, 685, 675, 1454, 675, 1454, 452, 1198, 451, 1201, 380)
+
+[node name="CollisionPolygon2D10" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(686, 156, 687, 229, 1199, 230, 1201, 156)
+
+[node name="CollisionPolygon2D11" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-558, 157, -559, 232, -339, 232, -338, 157)
+
+[node name="CollisionPolygon2D12" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-1072, 230, -1071, 452, -1145, 453, -1145, 301, -1292, 302, -1292, 230)
+
+[node name="CollisionPolygon2D13" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-1216, -284, -1215, -137, -559, -135, -558, -283)
+
+[node name="CollisionPolygon2D14" type="CollisionPolygon2D" parent="World"]
+position = Vector2(0, -420.4)
+rotation = -3.14159
+polygon = PackedVector2Array(-414, -208, -413, -138, 172, -136, 172, -211)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World"]
+position = Vector2(1423, 449)
+shape = SubResource("WorldBoundaryShape2D_hmlx4")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="World"]
+position = Vector2(530, 599)
+shape = SubResource("WorldBoundaryShape2D_epyo8")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="World"]
+position = Vector2(-1436, -867)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_hmlx4")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="World"]
+position = Vector2(-479, -1014)
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_epyo8")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1100, 900)
+render_target_update_mode = 0
+script = SubResource("GDScript_lqrhu")
+
+[node name="Camera3D" type="Camera3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8.39505, 0)
+current = true
+fov = 90.0
+size = 13.9
+
+[node name="Sprite3D" type="Sprite3D" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+transform = Transform3D(3.497, 0, 0, 0, 3.497, 0, 0, 0, 3.497, 0, 0, 0)
+axis = 1
+texture = ExtResource("1_h2bjd")

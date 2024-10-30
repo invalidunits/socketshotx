@@ -1,0 +1,155 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmpgb7tmwjwcb"]
+
+[ext_resource type="Texture2D" uid="uid://bpadn7s0gqwyx" path="res://assets/img/shot-spark.png" id="2_3kxpt"]
+[ext_resource type="Texture2D" uid="uid://badrca1b5hyw7" path="res://assets/img/shot-flash.png" id="2_p3ieq"]
+[ext_resource type="AudioStream" uid="uid://cxx1uye2312bs" path="res://assets/sfx/pistol.mp3" id="3_m32ub"]
+
+[sub_resource type="GDScript" id="GDScript_0414o"]
+script/source = "extends GunShot
+
+const damagePushScale = 35;
+@onready var length:float = ProjectSettings.get_setting(\"game/bullet/length\", 19);
+var shot_image = preload(\"res://assets/img/shot-flash.png\")
+var hit = null;
+var knockback = 1.0;
+var hit_data := {};
+
+
+const blood = [
+	preload(\"res://assets/img/blood1.png\"), 
+	preload(\"res://assets/img/blood2.png\"), 
+	preload(\"res://assets/img/blood3.png\"), 
+	preload(\"res://assets/img/blood4.png\")
+]
+
+func _shoot():
+	await get_tree().physics_frame;
+	hit_data = {};
+	# get space state
+	
+	
+	
+	#raycast from origin to length
+	var raycast = PhysicsRayQueryParameters2D.create(
+		global_position, global_position + global_transform.x*length*ProjectSettings.get_setting(\"game/measurement/gameplay_unit\", 75)
+	);
+	var rayhit = get_world_2d().direct_space_state.intersect_ray(raycast);
+	if !rayhit.is_empty():
+		
+		
+		length = rayhit.position.distance_to(global_position)/ProjectSettings.get_setting(\"game/measurement/gameplay_unit\", 75);
+		$\"Shot-spark\".visible = true;
+		$\"Shot-spark\".position = rayhit.position;
+		
+		var rid = rayhit.rid;
+		hit_data[\"knockback\"] = global_transform.x*damagePushScale*damage;
+		hit_data[\"hit_position\"] = rayhit.position;
+		if rayhit.collider is PhysicsBody2D:
+			hit = rayhit.collider;
+			hit_data[\"object\"] = hit;
+			
+			
+			if is_multiplayer_authority():
+				hit_data[\"hit_position\"] = rayhit.position;
+			if rayhit.collider is Character:
+				randomize();
+				$\"Shot-spark\".texture = blood.pick_random();
+				$\"Shot-spark\".rotation = global_transform.x.angle() + deg_to_rad(-90)
+				return;
+	
+	
+func get_colliding_hits() -> Array[Dictionary]:
+	if hit as PhysicsBody2D:
+		return [hit_data];
+	else:
+		return [];
+	
+	
+	
+
+
+func _draw():
+	draw_line($ShotPos.position, Vector2.RIGHT*length*ProjectSettings.get_setting(\"game/measurement/gameplay_unit\", 75), Color.YELLOW);
+	pass;
+	
+func _process(delta):
+	queue_redraw();
+
+func fade_away():
+	$AnimationPlayer.play(\"FadeAway\");
+	await $AnimationPlayer.animation_finished;
+	queue_free();
+"
+
+[sub_resource type="Animation" id="Animation_gfoif"]
+resource_name = "FadeAway"
+length = 0.18
+step = 0.02
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ShotPos/Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.075),
+"transitions": PackedFloat32Array(0.420449, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.075, 0.125),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Shot-spark:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.025, 0.04, 0.175),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.44, 1.44), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_66pv3"]
+_data = {
+"FadeAway": SubResource("Animation_gfoif")
+}
+
+[node name="Simpleshot" type="Node2D"]
+script = SubResource("GDScript_0414o")
+
+[node name="ShotPos" type="Node2D" parent="."]
+position = Vector2(23, -0.0382154)
+
+[node name="Sprite2D" type="Sprite2D" parent="ShotPos"]
+position = Vector2(8, 0)
+rotation = 1.5708
+texture = ExtResource("2_p3ieq")
+offset = Vector2(-0.355, 7.63)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_66pv3")
+}
+
+[node name="Shot-spark" type="Sprite2D" parent="."]
+visible = false
+top_level = true
+position = Vector2(66, 17)
+texture = ExtResource("2_3kxpt")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_m32ub")
+autoplay = true
